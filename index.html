@@ -12,14 +12,12 @@
     		}
     		table
     		{
-    			border-collapse: collapse;
 				background-color: green;
 				margin-right: auto;
 				margin-left: auto;
     		}
 			td
 			{
-				border: 2px black solid;
 				padding: 2px;
 			}
 			td>div
@@ -31,17 +29,19 @@
 			.black
 			{
 				background-color: black;
+				box-shadow: inset 0 0 10px grey;
 			}
 			.white
 			{
 				background-color: white;
+				box-shadow: inset 0 0 25px grey;
 			}
     	</style>
     </head>
     <body>
     	<div>
 	    	<h1>Othello</h1>
-	    	<table>
+	    	<table border="2">
 	    		<tr>
 	    			<td>
 	    				<div></div>

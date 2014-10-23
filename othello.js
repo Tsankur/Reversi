@@ -1,6 +1,6 @@
 var player = 1;
 var tablier;
-function othelloCell(cell)
+function OthelloCell(cell)
 {
 	this.player = 0;
 	this.cell = cell;
@@ -364,7 +364,7 @@ $(function(){
 		tablier[i] = new Array();
 		for(var j = 0; j < 8; j++)
 		{
-			tablier[i][j] = new othelloCell(collums[j]);
+			tablier[i][j] = new OthelloCell(collums[j]);
 			if(i == 3 && j == 3)
 			{
 				tablier[i][j].setColor("white");			}
