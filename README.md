@@ -1,4 +1,4 @@
 Reversi
 =======
 
-javascript Othello
+javascript reversi
