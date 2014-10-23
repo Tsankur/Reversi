@@ -1,4 +1,4 @@
-Othello
+Reversi
 =======
 
 javascript Othello
