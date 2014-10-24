@@ -2,6 +2,7 @@ var player = 1;
 var tablier;
 var cellsToChange;
 var bestNextCell;
+var turnBlocked = false;
 function OthelloCell(cell, x, y)
 {
 	this.player = 0;
@@ -32,17 +33,24 @@ function OthelloCell(cell, x, y)
 	}
 	this.swap = function()
 	{
+		self.cell.classList.toggle("swap");
 		if(self.player == 1)
 		{
 			self.player = 2;
-			self.cell.classList.remove("black");
-			self.cell.classList.add("white");
+			setTimeout(function()
+			{
+				self.cell.classList.remove("black");
+				self.cell.classList.add("white");
+			}, 250);
 		}
 		else if(self.player == 2)
 		{
 			self.player = 1;
-			self.cell.classList.add("black");
-			self.cell.classList.remove("white");
+			setTimeout(function()
+			{
+				self.cell.classList.add("black");
+				self.cell.classList.remove("white");
+			}, 250);
 		}
 	};
 }
@@ -93,8 +101,12 @@ function isPlayable(x, y, player)
 function cellOnClick()
 {
 	var othelloCell = this.othelloCell;
-	if(isPlayable(othelloCell.x, othelloCell.y, player))
+	if(!turnBlocked && isPlayable(othelloCell.x, othelloCell.y, player))
 	{
+		if(player == 1)
+		{
+			turnBlocked = true;
+		}
 		if(cellsToChange.length)
 		{
 			for (var i = cellsToChange.length - 1; i >= 0; i--)
@@ -142,13 +154,21 @@ function cellOnClick()
 					var resultPoints = isPlayable(j, i, player);
 					if(resultPoints)
 					{
+						if(i == 0 || i == 7)
+						{
+							resultPoints += 3;
+						}
+						if(j == 0 || j == 7)
+						{
+							resultPoints += 3;
+						}
 						if(player == 1)
 						{
 							tablier[i][j].setColor("halfBlack");
 						}
 						else
 						{
-							if(resultPoints > bestResult)
+							if(resultPoints > bestResult || resultPoints == bestResult && Math.random() > 0.5)
 							{
 								bestResult = resultPoints;
 								bestNextCell = tablier[i][j].cell;
@@ -163,6 +183,7 @@ function cellOnClick()
 		}
 		if(playerBlocked && !finish)
 		{
+			turnBlocked = false;
 			console.log("player " + player + " blocked");
 			if(player == 1)
 			{
@@ -186,12 +207,25 @@ function cellOnClick()
 							var resultPoints = isPlayable(j, i, player);
 							if(resultPoints)
 							{
+								if(i == 0 || i == 7)
+								{
+									resultPoints += 3;
+								}
+								if(j == 0 || j == 7)
+								{
+									resultPoints += 3;
+								}
 								if(player == 1)
 								{
 									tablier[i][j].setColor("halfBlack");
 								}
 								else
 								{
+									if(resultPoints > bestResult || resultPoints == bestResult && Math.random() > 0.5)
+									{
+										bestResult = resultPoints;
+										bestNextCell = tablier[i][j].cell;
+									}
 									tablier[i][j].setColor("halfWhite");
 								}
 								/*tablier[i][j].cell.innerHTML = resultPoints;*/
@@ -244,8 +278,9 @@ function cellOnClick()
 			if (typeof bestNextCell.onclick == "function")
 			{
 				setTimeout(function(){
+					turnBlocked = false;
 					bestNextCell.onclick.apply(bestNextCell);
-				}, 500);
+				}, 2000);
 			}
 		}
 	}
